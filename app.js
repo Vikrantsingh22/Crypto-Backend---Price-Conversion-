@@ -1,10 +1,13 @@
 const express = require("express");
 const connectdb = require("./util/mongoConnect");
+const updateCoinList = require("./controller/coinList");
 const app = express();
 require("dotenv").config();
 
 app.use(express.json());
 connectdb();
+// updateCoinList();
+app.get("/convert", updateCoinList.getValueofCurrency);
 app.get("/", (req, res) => {
   res.send("Welcome to the CoinList API");
 });

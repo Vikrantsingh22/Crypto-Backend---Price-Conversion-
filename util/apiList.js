@@ -7,4 +7,4 @@ const convertCoin = (fromCurrency, date) =>
 const companyHoldings = (currency) =>
   `https://api.coingecko.com/api/v3/companies/public_treasury/${currency}`;
 
-export { apiList, convertCoin, companyHoldings };
+module.exports = { apiList, convertCoin, companyHoldings };
