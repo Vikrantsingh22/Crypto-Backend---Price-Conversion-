@@ -6,11 +6,12 @@ const {
   companyHoldings,
 } = require("../util/apiList");
 var moment = require("moment");
+const { logger } = require("../util/winston");
 
 // populating the data in the coinList collection from the API
 
 // TASK 1
-const updateCoinList = async (req, res) => {
+const updateCoinList = async (req, res, next) => {
   try {
     const response = await axios.get(coinListAPI);
     const list = response.data;
@@ -24,14 +25,19 @@ const updateCoinList = async (req, res) => {
     await coinList.deleteMany({});
     await coinList.insertMany(coinListData);
   } catch (err) {
-    console.log(err);
+    const error = {
+      statusCode: 500,
+      message: "Error in populating the data",
+    };
+    logger.error("error while populating the data in database from api", err);
+    next(error);
   }
   console.log("Data populated successfully");
 };
 
 // TASK 2
 
-const getValueofCurrency = async (req, res) => {
+const getValueofCurrency = async (req, res, next) => {
   try {
     const { fromCurrency, toCurrency, date } = req.body;
     // I made use of moment package to format the given date easily
@@ -56,25 +62,24 @@ const getValueofCurrency = async (req, res) => {
       Number(coin1InTermsOfBTC) / Number(coin2InTermsOfBTC);
     // console.log(Coin1InTermsOfCoin2);
     const message = `1 ${fromCurrency} = ${Coin1InTermsOfCoin2} ${toCurrency}`;
-    if (Coin1InTermsOfCoin2) {
-      res.json({
-        msg: message,
-        onDate: formattedDate,
-      });
-    } else {
-      res.json({
-        msg: "Please enter and DATE in correctly",
-        dateFormat: "DD-MM-YYYY",
-      });
-    }
+    res.json({
+      msg: message,
+      onDate: formattedDate,
+    });
   } catch (err) {
-    console.log(err.code);
+    const error = {
+      statusCode: 400,
+      message:
+        "Please enter the correct id of the currency or the date is not correct",
+    };
+    logger.error("error while converting the currencies", err);
+    next(error);
   }
 };
 
 // TASK 2
 
-const getCurrentCurrencyHoldings = async (req, res) => {
+const getCurrentCurrencyHoldings = async (req, res, next) => {
   try {
     const { currency } = req.body;
     const response = await axios.get(companyHoldings(currency));
@@ -96,7 +101,13 @@ const getCurrentCurrencyHoldings = async (req, res) => {
       });
     }
   } catch (err) {
-    console.log(err.code);
+    const error = {
+      statusCode: 400,
+      message:
+        "Please enter the correct id of the currency or the currency is not supported by coinGecko",
+    };
+    logger.error("error while fetching list of company", err.response.data);
+    next(error);
   }
 };
 module.exports = {

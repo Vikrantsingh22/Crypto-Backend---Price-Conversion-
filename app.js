@@ -6,7 +6,7 @@ const { updateCoinList } = require("./controller/coinList");
 const coinList = require("./models/coinList");
 const app = express();
 const cors = require("cors");
-
+const errorMiddleware = require("./middleware/errorHandler");
 // do not keep the origin as * in production
 // as the authentication cookies will not be sent as the origin is * that is wildcard
 // origin should be the domain of the frontend
@@ -21,6 +21,8 @@ app.use(
     maxAge: 86400,
   })
 );
+
+// if we dont want to use the cors then we can also use the proxy in the package.json file in the frontend
 require("dotenv").config();
 
 app.use(express.json());
@@ -29,6 +31,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to the CoinList API");
 });
 app.use("/api", router);
+
 app.listen(process.env.PORT || 4000, () => {
   console.log("Server is running on port 4000");
 });
@@ -37,3 +40,4 @@ app.listen(process.env.PORT || 4000, () => {
 cron.schedule("0 * * * *", () => {
   updateCoinList();
 });
+app.use(errorMiddleware);
