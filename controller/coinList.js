@@ -76,8 +76,8 @@ const getValueofCurrency = async (req, res) => {
 
 const getCurrentCurrencyHoldings = async (req, res) => {
   try {
-    // const { currency } = req.body;
-    const response = await axios.get(companyHoldings("bitcoin"));
+    const { currency } = req.body;
+    const response = await axios.get(companyHoldings(currency));
     // coinGecko supported values are only bitcoin or ethereum.
     const data = response.data.companies;
 
