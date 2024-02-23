@@ -1,0 +1,11 @@
+# node package dependencies directory
+node_modules/
+
+# Environment variables
+.env
+
+# generated files
+.DS_Store
+
+# lock files
+package-lock.json
