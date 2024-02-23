@@ -1,6 +1,10 @@
 const coinList = require("../models/coinList");
 const axios = require("axios");
-const { apiList, convertCoin } = require("../util/apiList");
+const {
+  coinListAPI,
+  convertCoin,
+  companyHoldings,
+} = require("../util/apiList");
 var moment = require("moment");
 
 // populating the data in the coinList collection from the API
@@ -8,7 +12,7 @@ var moment = require("moment");
 // TASK 1
 const updateCoinList = async (req, res) => {
   try {
-    const response = await axios.get(apiList);
+    const response = await axios.get(coinListAPI);
     const list = response.data;
     // using the map instead of the for loop to iterate beacuse for loop will execute the coinList.save() several times
     // using the insertMany method to insert the data in the collection
@@ -52,12 +56,51 @@ const getValueofCurrency = async (req, res) => {
       Number(coin1InTermsOfBTC) / Number(coin2InTermsOfBTC);
     // console.log(Coin1InTermsOfCoin2);
     const message = `1 ${fromCurrency} = ${Coin1InTermsOfCoin2} ${toCurrency}`;
-    res.json({
-      msg: message,
-      onDate: formattedDate,
-    });
+    if (Coin1InTermsOfCoin2) {
+      res.json({
+        msg: message,
+        onDate: formattedDate,
+      });
+    } else {
+      res.json({
+        msg: "Please enter and DATE in correctly",
+        dateFormat: "DD-MM-YYYY",
+      });
+    }
   } catch (err) {
-    console.log(err);
+    console.log(err.code);
   }
 };
-module.exports = { updateCoinList, getValueofCurrency };
+
+// TASK 2
+
+const getCurrentCurrencyHoldings = async (req, res) => {
+  try {
+    // const { currency } = req.body;
+    const response = await axios.get(companyHoldings("bitcoin"));
+    // coinGecko supported values are only bitcoin or ethereum.
+    const data = response.data.companies;
+
+    // As we only need the list of company's name we will discard the rest data
+    const ListCompanyName = data.map((companyIndex) => ({
+      CompanyName: companyIndex.name,
+    }));
+    if (ListCompanyName.length > 0) {
+      res.json({
+        msg: "Returning only the name of company other data is been discarded intentionally",
+        res: ListCompanyName,
+      });
+    } else {
+      res.json({
+        msg: "coinGecko supported values are only bitcoin or ethereum.",
+      });
+    }
+  } catch (err) {
+    console.log(err.code);
+  }
+};
+module.exports = {
+  updateCoinList,
+  getValueofCurrency,
+  getCurrentCurrencyHoldings,
+};
