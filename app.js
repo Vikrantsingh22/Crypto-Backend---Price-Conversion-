@@ -27,7 +27,15 @@ require("dotenv").config();
 
 app.use(express.json());
 
-connectdb();
+// TASK 1
+// using the cron scheduler to update the database every hour
+connectdb().then(() => {
+  updateCoinList(); // Populate data immediately on server start-up
+  // Schedule subsequent updates every hour
+  cron.schedule("0 * * * *", () => {
+    updateCoinList();
+  });
+});
 
 app.get("/", (req, res) => {
   res.send("Welcome to the CoinList API");
@@ -38,9 +46,5 @@ app.use("/api", router);
 app.listen(process.env.PORT || 4000, () => {
   console.log("Server is running on port 4000");
 });
-// TASK 1
-// using the cron scheduler to update the database every hour
-cron.schedule("0 * * * *", () => {
-  updateCoinList();
-});
+
 app.use(errorMiddleware);

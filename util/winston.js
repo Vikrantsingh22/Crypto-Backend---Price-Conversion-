@@ -1,32 +1,30 @@
-const { json } = require("express");
 const winston = require("winston");
+const mongoose = require("mongoose");
+const { format } = winston;
+require("winston-mongodb");
+require("dotenv").config();
 
-// here I have created a logger to log on loglevel that is info
-// main reason of using info loglevel is that it will log the error as well as the info
-// the logging can be useful for scaling the web server as we are keeping record of error
-// this logged error can be used to debug the error
-const logFileTransPort = new winston.transports.File({
-  filename: `./log/error.log`,
-  level: "info",
-  handleExceptions: true,
-  maxsize: 5242880, // 5MB
-  maxFiles: 5,
-  colorize: false,
-  format: winston.format.combine(
-    winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-    winston.format.json()
-  ),
-  datePattern: "YYYY-MM-DD",
-  zippedArchive: false,
+// Define the MongoDB transport for Winston
+
+// here we are using the MongoDB transport to store the logs in the MongoDB database
+// we switched to mongDB transport from file transport as render and many deployment platforms do not support the file system for free plans
+// The log can be accessed by the MongoDB Compass or any other MongoDB client
+// we are using the info level to store the logs in the database as info allows the logs of info, warn and error
+const mongoDBTransport = new winston.transports.MongoDB({
+  level: "info", // Log level
+  db: process.env.MONGO_URI, // MongoDB connection string
+  options: {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+  collection: "logs", // Collection name
+  format: format.combine(format.timestamp(), format.json()),
 });
 
-// we can also use dailyRotatefile to get the error.log file separate for each day
-
+// Define the logger instance with MongoDB transport
 const logger = winston.createLogger({
-  transports: [logFileTransPort],
+  transports: [mongoDBTransport],
   exitOnError: false,
 });
 
-module.exports = {
-  logger,
-};
+module.exports = { logger };

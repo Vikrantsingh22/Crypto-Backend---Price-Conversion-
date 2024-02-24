@@ -110,6 +110,7 @@ const getCurrentCurrencyHoldings = async (req, res, next) => {
     next(error);
   }
 };
+
 module.exports = {
   updateCoinList,
   getValueofCurrency,
