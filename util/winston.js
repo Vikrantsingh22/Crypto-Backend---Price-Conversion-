@@ -11,14 +11,20 @@ require("dotenv").config();
 // The log can be accessed by the MongoDB Compass or any other MongoDB client
 // we are using the info level to store the logs in the database as info allows the logs of info, warn and error
 const mongoDBTransport = new winston.transports.MongoDB({
-  level: "info", // Log level
+  level: "error", // Log level
   db: process.env.MONGO_URI, // MongoDB connection string
   options: {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   },
+  handleExceptions: true,
+
   collection: "logs", // Collection name
-  format: format.combine(format.timestamp(), format.json()),
+  format: format.combine(
+    format.timestamp(),
+    format.errors({ stack: true }),
+    format.json()
+  ),
 });
 
 // Define the logger instance with MongoDB transport

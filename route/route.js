@@ -19,7 +19,9 @@ router.get("/listCoins", async (req, res, next) => {
       data: response,
     });
   } catch (err) {
-    logger.error("error while fetching the list of coin from database", err);
+    logger.error("error while fetching the list of coin from database", {
+      metadata: err,
+    });
 
     next(err);
   }

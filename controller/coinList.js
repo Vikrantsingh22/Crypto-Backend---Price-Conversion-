@@ -29,7 +29,9 @@ const updateCoinList = async (req, res, next) => {
       statusCode: 500,
       message: "Error in populating the data",
     };
-    logger.error("error while populating the data in database from api", err);
+    logger.error("error while populating the data in database from api", {
+      metadata: err,
+    });
     next(error);
   }
   console.log("Data populated successfully");
@@ -60,7 +62,6 @@ const getValueofCurrency = async (req, res, next) => {
 
     const Coin1InTermsOfCoin2 =
       Number(coin1InTermsOfBTC) / Number(coin2InTermsOfBTC);
-    // console.log(Coin1InTermsOfCoin2);
     const message = `1 ${fromCurrency} = ${Coin1InTermsOfCoin2} ${toCurrency}`;
     res.json({
       msg: message,
@@ -72,7 +73,7 @@ const getValueofCurrency = async (req, res, next) => {
       message:
         "Please enter the correct id of the currency or the date is not correct",
     };
-    logger.error("error while converting the currencies", err);
+    logger.error("error while converting the currencies", { metadata: err });
     next(error);
   }
 };
@@ -106,7 +107,7 @@ const getCurrentCurrencyHoldings = async (req, res, next) => {
       message:
         "Please enter the correct id of the currency or the currency is not supported by coinGecko or coinGecko is rate limiting you wait for sometime",
     };
-    logger.error("error while fetching list of company", err.response.data);
+    logger.error("error while fetching list of company", { metadata: err });
     next(error);
   }
 };
