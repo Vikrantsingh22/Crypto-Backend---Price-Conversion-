@@ -104,7 +104,7 @@ const getCurrentCurrencyHoldings = async (req, res, next) => {
     const error = {
       statusCode: 400,
       message:
-        "Please enter the correct id of the currency or the currency is not supported by coinGecko",
+        "Please enter the correct id of the currency or the currency is not supported by coinGecko or coinGecko is rate limiting you wait for sometime",
     };
     logger.error("error while fetching list of company", err.response.data);
     next(error);

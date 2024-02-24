@@ -26,10 +26,13 @@ app.use(
 require("dotenv").config();
 
 app.use(express.json());
+
 connectdb();
+
 app.get("/", (req, res) => {
   res.send("Welcome to the CoinList API");
 });
+
 app.use("/api", router);
 
 app.listen(process.env.PORT || 4000, () => {

@@ -1,14 +1,19 @@
 const mongoose = require("mongoose");
+const { logger } = require("./winston");
 
-const connectdb = async () => {
+const connectdb = async (req, res, next) => {
   try {
     const connect = await mongoose.connect(process.env.MONGO_URI, {
       dbName: "coinList",
     });
     console.log("database connected");
   } catch (err) {
-    console.log(err);
-    process.exit(1);
+    const error = {
+      statusCode: 500,
+      message: "Error while connecting the database",
+    };
+    logger.error(err);
+    next(error);
   }
 };
 

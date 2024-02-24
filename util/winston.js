@@ -20,6 +20,8 @@ const logFileTransPort = new winston.transports.File({
   zippedArchive: false,
 });
 
+// we can also use dailyRotatefile to get the error.log file separate for each day
+
 const logger = winston.createLogger({
   transports: [logFileTransPort],
   exitOnError: false,
