@@ -44,8 +44,8 @@ Follow these steps to set up and run the project:
 4. Ensure the `MONGO_URI` contains the database named `"coinList"` if the database uri have the db name `coinList` then collections `coinlists` and `logs` will be in the `coinList` database. If not, it will automatically create two database `coinList` and `test`, collection `coinlists ` will be stored in ` coinList` DB and `logs` in `"test"` DB.
    example:
    `bash
-    mongodb+srv://username:<password>@clusterabjdsk.mongodb.net/coinList?retryWrites=true&w=majority&appName=Cluster0
-    `
+ mongodb+srv://username:<password>@clusterabjdsk.mongodb.net/coinList?retryWrites=true&w=majority&appName=Cluster0
+ `
 
 5. After creating .env, run the script:
    ```bash
@@ -93,9 +93,34 @@ Prefix can be any `URL` , for example, `localhost:5000` or any deployed link lik
   {
     "msg": "Returning only the name of company other data is been discarded intentionally",
     "res": [
-      {
-        "CompanyName": "MicroStrategy Inc."
-      }
+      "MicroStrategy Inc.",
+      "Galaxy Digital Holdings",
+      "Marathon Digital Holdings",
+      "Tesla, Inc.",
+      "Hut 8 Mining Corp",
+      "Coinbase Global, Inc",
+      "Block Inc.",
+      "Riot Platforms, Inc",
+      "Hive Blockchain",
+      "CleanSpark Inc.",
+      "NEXON Co Ltd",
+      "Exodus Movement Inc",
+      "Meitu Inc",
+      "Bit Digital, Inc",
+      "Bitfarms Limited",
+      "NFT Investments PLC",
+      "Cipher Mining",
+      "DMG Blockchain Solutions Inc.",
+      "Neptune Digital Assets Corp.",
+      "BIGG Digital Assets Inc.",
+      "Advanced Bitcoin Technologies AG",
+      "FRMO Corp.",
+      "The Brooker Group",
+      "DigitalX",
+      "LQwD Technologies Corp",
+      "Cypherpunk Holdings Inc",
+      "Core Scientific",
+      "Mogo Inc."
     ]
   }
   ```
