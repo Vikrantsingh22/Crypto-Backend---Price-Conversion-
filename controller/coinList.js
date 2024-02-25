@@ -88,9 +88,7 @@ const getCurrentCurrencyHoldings = async (req, res, next) => {
     const data = response.data.companies;
 
     // As we only need the list of company's name we will discard the rest data
-    const ListCompanyName = data.map((companyIndex) => ({
-      CompanyName: companyIndex.name,
-    }));
+    const ListCompanyName = data.map((companyIndex) => companyIndex.name);
     if (ListCompanyName.length > 0) {
       res.json({
         msg: "Returning only the name of company other data is been discarded intentionally",

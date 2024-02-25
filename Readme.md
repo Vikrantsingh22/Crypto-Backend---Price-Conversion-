@@ -41,7 +41,11 @@ Follow these steps to set up and run the project:
 
 3. Create a `.env` file in the root directory. Refer to the `.env.sample` file for required environment variables.
 
-4. Ensure the `MONGO_URI` contains the database named `"coinList"`. If not, it will automatically create one, and logs will be stored in a new database named `"test"`.
+4. Ensure the `MONGO_URI` contains the database named `"coinList"` if the database uri have the db name `coinList` then collections `coinlists` and `logs` will be in the `coinList` database. If not, it will automatically create two database `coinList` and `test`, collection `coinlists ` will be stored in ` coinList` DB and `logs` in `"test"` DB.
+   example:
+   `bash
+    mongodb+srv://username:<password>@clusterabjdsk.mongodb.net/coinList?retryWrites=true&w=majority&appName=Cluster0
+    `
 
 5. After creating .env, run the script:
    ```bash
@@ -56,6 +60,7 @@ Prefix can be any `URL` , for example, `localhost:5000` or any deployed link lik
 
 - **GET Request**
 - **URL** /api/convert
+- `localhost:5000/api/convert` or `crypto-test.xyz/api/convert`
 - **Request Body (JSON):**
   ```json
   {
@@ -76,6 +81,7 @@ Prefix can be any `URL` , for example, `localhost:5000` or any deployed link lik
 
 - **GET Request**
 - **URL** /api/companyHoldings
+- `localhost:5000/api/companyHoldings` or `crypto-test.xyz/api/companyHoldings`
 - **Request Body (JSON):**
   ```json
   {
@@ -99,6 +105,7 @@ Prefix can be any `URL` , for example, `localhost:5000` or any deployed link lik
 - **GET Request**
 - **URL** /api/listCoins/
 - **Response:**
+- `localhost:5000/api/companyHoldings` or `crypto-test.xyz/api/companyHoldings`
   ```json
   {
     "msg": "List of all the document stored in MONGODB database",
