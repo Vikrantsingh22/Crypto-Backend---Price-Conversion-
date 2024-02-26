@@ -130,7 +130,7 @@ Prefix can be any `URL` , for example, `localhost:5000` or any deployed link lik
 - **GET Request**
 - **URL** /api/listCoins/
 - **Response:**
-- `localhost:5000/api/companyHoldings` or `crypto-test.xyz/api/companyHoldings`
+- `localhost:5000/api/listCoins/` or `crypto-test.xyz/api/listCoins/`
   ```json
   {
     "msg": "List of all the document stored in MONGODB database",
